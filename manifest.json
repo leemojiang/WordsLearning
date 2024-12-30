@@ -1,0 +1,22 @@
+{
+    "manifest_version": 3,
+    "name": "Request Parameter Logger",
+    "version": "1.0",
+    "permissions": [
+      "webRequest",
+      "storage"
+    ],
+    "background": {
+      "service_worker": "background.js"
+    },
+    "host_permissions": [
+      "https://fanyi.baidu.com/*"
+    ],
+    "content_scripts": [ 
+        { "matches": ["https://fanyi.baidu.com/*"], 
+        "js": ["content.js"] 
+        } 
+    ],
+    "action":{"default_popup":"popup.html"}
+  }
+  
