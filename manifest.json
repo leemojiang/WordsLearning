@@ -14,7 +14,7 @@
     ],
     "content_scripts": [ 
         { "matches": ["https://fanyi.baidu.com/*"], 
-        "js": ["./scripts/content.js"] 
+        "js": ["./scripts/contentV2.js"] 
         } 
     ],
     "action":{"default_popup":"./popup/popup.html"}
