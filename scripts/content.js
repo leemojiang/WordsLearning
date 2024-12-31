@@ -16,8 +16,8 @@ function handleUrlChange(url) {
   const params = new URLSearchParams(new URL(url).search);
   const queryValue = params.get('query');
 
-  const queryStr = getDifferentPart(lastQuery,queryValue)
-  if (queryStr && queryValue[queryValue.length-1]=='\n'){
+  const queryStr = getDifferentLines(lastQuery,queryValue)
+  if (queryStr.length > 0 && queryValue[queryValue.length-1]=='\n'){
     const timestamp = new Date().toLocaleString(); 
     chrome.runtime.sendMessage({query: queryStr, time: timestamp}, function(response) {
         console.log('Message response:', response);
@@ -30,29 +30,28 @@ function handleUrlChange(url) {
   lastQuery = queryValue
 }
 
-function getDifferentPartIndex(str1, str2) {
-  const minLength = Math.min(str1.length, str2.length);
+function getDifferentLines(str1, str2) {
+  const lines1 = str1.split('\n'); //old str
+  const lines2 = str2.split('\n'); //new str
+  const differentLines = [];
 
-  let clIndex = 0; //change line index
-  let index = 0;
+  const maxLength = Math.max(lines1.length, lines2.length);
 
-  for (let i = 0; i < minLength; i++) {
-    index = i
-    if ( str1[i] == str2[i]) {
-      if( str1[i] == '\n'){
-        clIndex = i
+  for (let i = 0; i < maxLength; i++) {
+    if (lines1[i] !== lines2[i]) {
+      // if (lines1[i] !== undefined) {
+      //   differentLines.push(lines1[1]);
+      // }
+      if (lines2[i] !== undefined && lines2[i].length >0) {
+        differentLines.push(lines2[i]);
       }
-    }else{
-      break
     }
   }
-
-  return clIndex;
+  return differentLines;
 }
 
-function getDifferentPart(oldStr, newStr) {
-  const index = getDifferentPartIndex(oldStr, newStr);
-  console.log(index,oldStr)
-  console.log(index,newStr)
-  return newStr.substring(index).trim().toLowerCase();
-}
+// 示例用法
+const str1 = 'Modular\nabc\n\nedg\n';
+const str2 = 'Modular\nabc\n\nedg\nccf\n';
+const differentLines = getDifferentLines(str1, str2);
+console.log('不同的行:', differentLines);
