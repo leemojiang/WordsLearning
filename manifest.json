@@ -7,16 +7,16 @@
       "storage"
     ],
     "background": {
-      "service_worker": "background.js"
+      "service_worker": "./scripts/background.js"
     },
     "host_permissions": [
       "https://fanyi.baidu.com/*"
     ],
     "content_scripts": [ 
         { "matches": ["https://fanyi.baidu.com/*"], 
-        "js": ["content.js"] 
+        "js": ["./scripts/content.js"] 
         } 
     ],
-    "action":{"default_popup":"popup.html"}
+    "action":{"default_popup":"./popup/popup.html"}
   }
   
