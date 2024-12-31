@@ -1,13 +1,13 @@
-// 监听URL变化
 let lastUrl = location.href;
-new MutationObserver(() => {
-  const url = location.href;
-  if (url !== lastUrl) {
-    lastUrl = url;
-    handleUrlChange(url);
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'Enter') {
+    const url = location.href;
+    if (url !== lastUrl) {
+      lastUrl = url;
+      handleUrlChange(url);
+    }
   }
-}).observe(document, {subtree: true, childList: true});
-
+});
 // 处理URL变化
 
 let lastQuery = '';
@@ -15,6 +15,10 @@ let lastQuery = '';
 function handleUrlChange(url) {
   const params = new URLSearchParams(new URL(url).search);
   const queryValue = params.get('query');
+
+  // if(queryValue[queryValue.length-1]!='\n'){
+  //   return
+  // }
 
   const queryStr = getDifferentLines(lastQuery,queryValue)
   if (queryStr.length > 0 && queryValue[queryValue.length-1]=='\n'){
@@ -42,7 +46,7 @@ function getDifferentLines(str1, str2) {
       // if (lines1[i] !== undefined) {
       //   differentLines.push(lines1[1]);
       // }
-      if (lines2[i] !== undefined && lines2[i].length >0) {
+      if (lines2[i] !== undefined && lines2[i].length >1) {
         differentLines.push(lines2[i]);
       }
     }

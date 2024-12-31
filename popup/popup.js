@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
       timeSpan.textContent = `Time: ${item.time}`;
       const querySpan = document.createElement('span');
       querySpan.className = 'query';
-      querySpan.textContent = `Query: ${item.query}`;
+      querySpan.textContent = `${item.query}`;
       li.appendChild(timeSpan);
       li.appendChild(querySpan);
       queryList.appendChild(li);
