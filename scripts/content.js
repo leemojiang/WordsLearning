@@ -17,8 +17,7 @@ function handleUrlChange(url) {
   const queryValue = params.get('query');
 
   const queryStr = getDifferentPart(lastQuery,queryValue)
-  console.log(queryStr)
-  if (queryStr) {
+  if (queryStr && queryValue[queryValue.length-1]=='\n'){
     const timestamp = new Date().toLocaleString(); 
     chrome.runtime.sendMessage({query: queryStr, time: timestamp}, function(response) {
         console.log('Message response:', response);
@@ -34,16 +33,21 @@ function handleUrlChange(url) {
 function getDifferentPartIndex(str1, str2) {
   const minLength = Math.min(str1.length, str2.length);
 
+  let clIndex = 0; //change line index
   let index = 0;
 
   for (let i = 0; i < minLength; i++) {
     index = i
-    if ( str1[i] != str2[i]) {
-      break;
+    if ( str1[i] == str2[i]) {
+      if( str1[i] == '\n'){
+        clIndex = i
+      }
+    }else{
+      break
     }
   }
 
-  return index;
+  return clIndex;
 }
 
 function getDifferentPart(oldStr, newStr) {
