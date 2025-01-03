@@ -1,5 +1,5 @@
 let lastUrl = location.href;
-document.addEventListener('keydown', function(event) {
+document.addEventListener('keydown', function (event) {
   if (event.key === 'Enter') {
     const url = location.href;
     if (url !== lastUrl) {
@@ -20,13 +20,13 @@ function handleUrlChange(url) {
   //   return
   // }
 
-  const queryStr = getDifferentLines(lastQuery,queryValue)
-  if (queryStr.length > 0 && queryValue[queryValue.length-1]=='\n'){
-    const timestamp = new Date().toLocaleString(); 
-    chrome.runtime.sendMessage({query: queryStr, time: timestamp}, function(response) {
-        console.log('Message response:', response);
-      });      
-    console.log("Query: ",queryStr)
+  const queryStr = getDifferentLines(lastQuery, queryValue)
+  if (queryStr.length > 0 && queryValue[queryValue.length - 1] == '\n') {
+    const timestamp = new Date().toLocaleString();
+    chrome.runtime.sendMessage({ query: queryStr, time: timestamp }, function (response) {
+      console.log('Message response:', response);
+    });
+    console.log("Query: ", queryStr)
   } else {
     console.log('No query parameter found in URL:', url);
   }
@@ -46,7 +46,7 @@ function getDifferentLines(str1, str2) {
       // if (lines1[i] !== undefined) {
       //   differentLines.push(lines1[1]);
       // }
-      if (lines2[i] !== undefined && lines2[i].length >1) {
+      if (lines2[i] !== undefined && lines2[i].length > 1) {
         differentLines.push(lines2[i]);
       }
     }
