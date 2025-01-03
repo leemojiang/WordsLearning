@@ -6,7 +6,7 @@ document.addEventListener('keydown',function(event){
 
 function getWordsFromSpans() {
     const spans = document.querySelectorAll('div[role="textbox"] span[data-slate-string="true"]');
-    const words = Array.from(spans).map(span => span.textContent);
+    const words = Array.from(spans).map(span => span.textContent).map(item => item.trim()).filter(item => item.length > 1 );
     return words;
   }
 
@@ -17,19 +17,7 @@ function handleContentChange() {
     console.log('Current words:', currentWords);
     
     //对比逻辑，例如与之前的内容进行比较
-    const differentLines = [];
-    const maxLength = Math.max(currentWords.length, lastWords.length);
-
-    for (let i = 0; i < maxLength; i++) {
-        if (lastWords[i] !== currentWords[i]) {
-          if (currentWords[i] !== undefined && currentWords[i].length >1) {
-            const trimmed = currentWords[i].trim()
-            if (trimmed.length > 1) {
-                differentLines.push(trimmed);
-            }
-          }
-        }
-    }
+    const differentLines = findDifferences(currentWords,lastWords);
     lastWords = currentWords
 
     if (differentLines.length > 0){
@@ -42,5 +30,16 @@ function handleContentChange() {
         console.log('No update found');
     }
     
+}
+
+function findDifferences(currentList,lastList){
+  // let currentList1 = currentList.map(item => item.trim()).filter(item => item.length > 1 ); 
+  // let lastList1 = lastList.map(item => item.trim()).filter(item => item.length > 1 ); 
+
+  let setPrev = new Set(lastList)
+  let setCur = new Set(currentList)
+
+  let differences = [...setCur].filter(x=> !setPrev.has(x))
+  return differences
 }
 
