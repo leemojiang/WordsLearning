@@ -1,9 +1,10 @@
+// Enter触发回调检测
 document.addEventListener('keydown', function (event) {
   if (event.key == 'Enter') {
     handleContentChange();
   }
 })
-
+// 抓取页面中的单词
 function getWordsFromSpans() {
   const spans = document.querySelectorAll('div[role="textbox"] span[data-slate-string="true"]');
   const words = Array.from(spans).map(span => span.textContent).map(item => item.trim()).filter(item => item.length > 1);

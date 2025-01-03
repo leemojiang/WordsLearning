@@ -1,16 +1,4 @@
-// chrome.webRequest.onBeforeRequest.addListener(
-//     function(details) {
-//       const url = new URL(details.url);
-//       const params = new URLSearchParams(url.search);
-//       const queryStr= params.get("query")
-//       if(queryStr){
-//         console.log(queryStr)
-//       }
-
-//     },
-//     {urls: ["https://fanyi.baidu.com/*"]},
-//   );
-
+//消息函数的处理
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.query && message.time) {
     chrome.storage.local.get({ requestParams: [] }, function (result) {

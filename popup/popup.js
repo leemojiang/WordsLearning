@@ -1,10 +1,10 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   const queryList = document.getElementById('queryList');
   const clearButton = document.getElementById('clearButton');
   const downloadButton = document.getElementById('downloadButton');
 
   // 加载并显示存储的数据
-  chrome.storage.local.get({requestParams: []}, function(result) {
+  chrome.storage.local.get({ requestParams: [] }, function (result) {
     result.requestParams.forEach(item => {
       const li = document.createElement('li');
       const timeSpan = document.createElement('span');
@@ -20,16 +20,16 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // 清空存储和列表
-  clearButton.addEventListener('click', function() {
-    chrome.storage.local.clear(function() {
+  clearButton.addEventListener('click', function () {
+    chrome.storage.local.clear(function () {
       queryList.innerHTML = '';
       console.log('Storage cleared');
     });
   });
 
   // 下载存储的数据
-  downloadButton.addEventListener('click', function() {
-    chrome.storage.local.get(null, function(items) {
+  downloadButton.addEventListener('click', function () {
+    chrome.storage.local.get(null, function (items) {
       const dataStr = JSON.stringify(items);
       const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
 
@@ -40,5 +40,13 @@ document.addEventListener('DOMContentLoaded', function() {
       linkElement.setAttribute('download', exportFileDefaultName);
       linkElement.click();
     });
+  });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  const openInfoButton = document.getElementById('open-info');
+
+  openInfoButton.addEventListener('click', function() {
+    chrome.tabs.create({ url: '/play/game.html' });
   });
 });
