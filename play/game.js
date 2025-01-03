@@ -25,6 +25,7 @@ function wordDic2WordCloud(wordDict_,container){
     list: wordCloudData,
     gridSize: Math.round(16 * container.offsetWidth / 1024),
     weightFactor: function (size) {
+      return size * 15
       return Math.pow(size, 2.3) * container.offsetWidth / 1024;
     },
     fontFamily: 'Times, serif',

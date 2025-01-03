@@ -13,10 +13,16 @@
     <button id="known">I Know This</button>
     <button id="unknown">I Don't Know This</button>
   </div>
-  <!-- <canvas id="wordCanvas" width="500" height="500"></canvas>
-  <canvas id="unKnownCanvas" width="500" height="500"></canvas> -->
-  <div id="wordCanvas" style="width: 500px; height: 500px;"></div>
-  <div id="unKnownCanvas" style="width: 500px; height: 500px;"></div>
+  <div class="canvas-container">
+    <div class="canvas-item">
+      <h2>Searched Words</h2>
+      <div id="wordCanvas" style="width: 500px; height: 500px;"></div>
+    </div>
+    <div class="canvas-item">
+      <h2>Unknown Words</h2>
+      <div id="unKnownCanvas" style="width: 500px; height: 500px;"></div>
+    </div>
+  </div>
   <script src="game.js"></script>
 </body>
 </html>
