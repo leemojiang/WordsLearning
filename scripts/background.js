@@ -7,6 +7,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       chrome.storage.local.set({ requestParams: requestParams }, function () {
         console.log('Query parameter saved:', message.query);
         sendResponse({ status: 'success' });
+        message.query.map(x => updateWordCount(x))
       });
     });
   } else {
@@ -15,4 +16,38 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
   return true; // Keep the message channel open for sendResponse
 });
+
+
+function updateWordCount(word) {
+  if (word.trim().split(' ').length > 1) {
+    console.log("Is a sentence")
+    return
+  }
+
+  chrome.storage.local.get({ wordCounts: {} }, function (result) {
+    let wordCounts = result.wordCounts;
+
+    if (wordCounts[word]) {
+      wordCounts[word] += 1;
+    } else {
+      wordCounts[word] = 1;
+    }
+
+    chrome.storage.local.set({ wordCounts: wordCounts }, function () {
+      console.log('Word count updated:', wordCounts);
+    });
+  });
+}
+
+
+function testWordCount(){
+  chrome.storage.local.get(["wordCounts"], function(result){
+    console.log(1,result.wordCounts)
+  });
+
+  chrome.storage.local.get({wordCounts:[]}, function(result){
+    console.log(2,result.wordCounts)
+  });
+}
+
 
