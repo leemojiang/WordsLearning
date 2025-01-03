@@ -2,23 +2,55 @@
 let words = [];
 let currentIndex = 0;
 
+let wordsDic ={};
+let unknownWords={};
+
 const wordContainer = document.getElementById('word-container');
 const knownButton = document.getElementById('known');
 const unknownButton = document.getElementById('unknown');
+const wordCanvas = document.getElementById('wordCanvas');
+const unKnownCanvas = document.getElementById('unKnownCanvas');
+
+
+function wordDic2WordCloud(wordDict_,container){
+  let wordCloudData = []; 
+  for (let word in wordDict_) { 
+    if (wordDict_.hasOwnProperty(word)) { 
+      wordCloudData.push([word, wordDict_[word]]); 
+    } 
+  } 
+  // WordCloud(canvas, { list: wordCloudData });
+  // 使用WordCloud.js生成词云图 
+  WordCloud(container, {
+    list: wordCloudData,
+    gridSize: Math.round(16 * container.offsetWidth / 1024),
+    weightFactor: function (size) {
+      return Math.pow(size, 2.3) * container.offsetWidth / 1024;
+    },
+    fontFamily: 'Times, serif',
+    color: 'random-dark',
+    rotateRatio: 0.5,
+    rotationSteps: 2,
+    backgroundColor: '#f0f0f0',
+    drawOutOfBound: false
+  });
+}
+
 
 
 document.addEventListener('DOMContentLoaded', function () {
   // 从本地存储获取单词列表
   chrome.storage.local.get(['wordCounts', 'unknowCounts'], function (result) {
-    let wc = result.wordCounts || {};
-    let uwc = result.unknowCounts || {}; //unknown word list
+    wordsDic = result.wordCounts || {};
+    unknownWords = result.unknowCounts || {}; //unknown word list
 
-    console.log(uwc)
-    console.log(wc)
-
-    let wl = Object.keys(wc).sort((a, b) => wc[b] - wc[a]) //decending sorted word list
-    let uwl = Object.keys(uwc).sort((a, b) => uwc[b] - uwc[a])
+    let wl = Object.keys(wordsDic).sort((a, b) => wordsDic[b] - wordsDic[a]) //decending sorted word list
+    let uwl = Object.keys(unknownWords).sort((a, b) => unknownWords[b] - unknownWords[a])
     words = uwl.concat(wl)
+
+    wordDic2WordCloud(wordsDic,wordCanvas);
+    wordDic2WordCloud(unknownWords,unKnownCanvas);
+
     showWord();
   });
 
@@ -72,6 +104,8 @@ function updateFrequency(isKnown) {
         unknowCounts[word] = 1;
       }
     }
+
+    wordDic2WordCloud(unknowCounts,unKnownCanvas);
 
     chrome.storage.local.set({ unknowCounts: unknowCounts }, function () {
       console.log('Unknown count updated:', unknowCounts);
