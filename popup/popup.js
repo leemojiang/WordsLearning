@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', function () {
   const queryList = document.getElementById('queryList');
   const clearButton = document.getElementById('clearButton');
   const downloadButton = document.getElementById('downloadButton');
+  const uploadButton = document.getElementById('uploadButton');
+  const uploadInput = document.getElementById('uploadInput');
 
   // 加载并显示存储的数据
   chrome.storage.sync.get({ requestParams: [] }, function (result) {
@@ -55,6 +57,29 @@ document.addEventListener('DOMContentLoaded', function () {
       linkElement.setAttribute('download', exportFileDefaultName);
       linkElement.click();
     });
+  });
+
+  // 处理文件上传
+  uploadButton.addEventListener('click', function () {
+    uploadInput.click();
+  });
+
+  uploadInput.addEventListener('change', function (event) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const uploadedData = JSON.parse(e.target.result);
+        chrome.storage.sync.get({ requestParams: [] }, function (result) {
+          const mergedData = result.requestParams.concat(uploadedData.requestParams);
+          chrome.storage.sync.set({ requestParams: mergedData }, function () {
+            console.log('Data merged');
+            location.reload(); // 重新加载页面以显示合并的数据
+          });
+        });
+      };
+      reader.readAsText(file);
+    }
   });
 });
 
