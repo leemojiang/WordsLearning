@@ -1,3 +1,15 @@
+.button-container {
+  display: flex;
+  justify-content: space-between; /* 均等分布按钮 */
+  margin-bottom: 10px;
+}
+
+.button-container button {
+  flex: 1; /* 使按钮均等分布 */
+  margin: 0 5px; /* 调整按钮间距 */
+  padding: 5px;
+}
+
 body {
   font-family: Arial, sans-serif;
   background-color: #f0f0f0;
@@ -25,6 +37,10 @@ button {
 
 button:hover {
   background-color: #005a9e;
+}
+
+#clearButton:hover {
+  background-color: #ff4d4d; /* 红色 */
 }
 
 ul {
@@ -68,10 +84,3 @@ li {
   background-repeat: no-repeat;
   background-position: center;
 }
-.delete-button:hover {
-  background-color: #cc0000;
-}
-
-
-
-
