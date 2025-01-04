@@ -1,10 +1,10 @@
 //消息函数的处理
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.query && message.time) {
-    chrome.storage.local.get({ requestParams: [] }, function (result) {
+    chrome.storage.sync.get({ requestParams: [] }, function (result) {
       const requestParams = result.requestParams;
       requestParams.push({ time: message.time, query: message.query, ts: message.ts });
-      chrome.storage.local.set({ requestParams: requestParams }, function () {
+      chrome.storage.sync.set({ requestParams: requestParams }, function () {
         console.log('Query parameter saved:', message.query);
         sendResponse({ status: 'success' });
         message.query.map(x => updateWordCount(x))
@@ -24,7 +24,7 @@ function updateWordCount(word) {
     return
   }
 
-  chrome.storage.local.get({ wordCounts: {} }, function (result) {
+  chrome.storage.sync.get({ wordCounts: {} }, function (result) {
     let wordCounts = result.wordCounts;
 
     if (wordCounts[word]) {
@@ -33,7 +33,7 @@ function updateWordCount(word) {
       wordCounts[word] = 1;
     }
 
-    chrome.storage.local.set({ wordCounts: wordCounts }, function () {
+    chrome.storage.sync.set({ wordCounts: wordCounts }, function () {
       console.log('Word count updated:', wordCounts);
     });
   });
@@ -41,11 +41,11 @@ function updateWordCount(word) {
 
 
 function testWordCount(){
-  chrome.storage.local.get(["wordCounts"], function(result){
+  chrome.storage.sync.get(["wordCounts"], function(result){
     console.log(1,result.wordCounts)
   });
 
-  chrome.storage.local.get({wordCounts:[]}, function(result){
+  chrome.storage.sync.get({wordCounts:[]}, function(result){
     console.log(2,result.wordCounts)
   });
 }

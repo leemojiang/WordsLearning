@@ -41,7 +41,7 @@ function wordDic2WordCloud(wordDict_,container){
 
 document.addEventListener('DOMContentLoaded', function () {
   // 从本地存储获取单词列表
-  chrome.storage.local.get(['wordCounts', 'unknowCounts'], function (result) {
+  chrome.storage.sync.get(['wordCounts', 'unknowCounts'], function (result) {
     wordsDic = result.wordCounts || {};
     unknownWords = result.unknowCounts || {}; //unknown word list
 
@@ -84,7 +84,7 @@ function showWord() {
 // 更新单词频率
 function updateFrequency(isKnown) {
   // 保存更新后的单词列表
-  chrome.storage.local.get({ unknowCounts: {} }, function (result) {
+  chrome.storage.sync.get({ unknowCounts: {} }, function (result) {
     let unknowCounts = result.unknowCounts;
     let word = words[currentIndex];
 
@@ -108,7 +108,7 @@ function updateFrequency(isKnown) {
 
     wordDic2WordCloud(unknowCounts,unKnownCanvas);
 
-    chrome.storage.local.set({ unknowCounts: unknowCounts }, function () {
+    chrome.storage.sync.set({ unknowCounts: unknowCounts }, function () {
       console.log('Unknown count updated:', unknowCounts);
     });
 
