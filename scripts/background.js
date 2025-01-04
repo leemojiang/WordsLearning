@@ -50,40 +50,40 @@ function testWordCount(){
   });
 }
 
-// 从chrome.storage.local获取数据
-function getLocalStorageData(callback) {
-  chrome.storage.local.get({requestParams:[]}, function(localData) {
-    callback(localData);
-  });
-}
+// // 从chrome.storage.local获取数据
+// function getLocalStorageData(callback) {
+//   chrome.storage.local.get({requestParams:[]}, function(localData) {
+//     callback(localData);
+//   });
+// }
 
-// 合并数据并存储到chrome.storage.sync
-function mergeAndSyncData() {
-  // 获取chrome.storage.local中的数据
-  getLocalStorageData(function(localData) {
-    // 获取chrome.storage.sync中的数据
-    chrome.storage.sync.get({requestParams:[]}, function(syncData) {
-      // 合并数据
-      list1 = syncData.requestParams;
-      list2 = localData.requestParams;
+// // 合并数据并存储到chrome.storage.sync
+// function mergeAndSyncData() {
+//   // 获取chrome.storage.local中的数据
+//   getLocalStorageData(function(localData) {
+//     // 获取chrome.storage.sync中的数据
+//     chrome.storage.sync.get({requestParams:[]}, function(syncData) {
+//       // 合并数据
+//       list1 = syncData.requestParams;
+//       list2 = localData.requestParams;
 
-      list2.forEach(item => { if (!list1.includes(item)) { list1.push(item); }})
+//       list2.forEach(item => { if (!list1.includes(item)) { list1.push(item); }})
       
-      console.log(list2)
-      console.log(list1)
+//       console.log(list2)
+//       console.log(list1)
       
-      // 存储合并后的数据到chrome.storage.sync
-      chrome.storage.sync.set({requestParams:list1}, function() {
-        if (chrome.runtime.lastError) {
-          console.error('Error syncing data:', chrome.runtime.lastError);
-        } else {
-          console.log('Data is successfully merged and synced.');
-        }
-      });
-    });
-  });
-}
+//       // 存储合并后的数据到chrome.storage.sync
+//       chrome.storage.sync.set({requestParams:list1}, function() {
+//         if (chrome.runtime.lastError) {
+//           console.error('Error syncing data:', chrome.runtime.lastError);
+//         } else {
+//           console.log('Data is successfully merged and synced.');
+//         }
+//       });
+//     });
+//   });
+// }
 
-// 调用函数进行数据合并和同步
-mergeAndSyncData();
+// // 调用函数进行数据合并和同步
+// mergeAndSyncData();
 
