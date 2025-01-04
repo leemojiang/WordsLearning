@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
       querySpan.textContent = `${item.query}`;
       const deleteButton = document.createElement('button');
       deleteButton.className = 'delete-button';
-      deleteButton.textContent = 'Delete';
+      // deleteButton.textContent = 'Delete';
       deleteButton.addEventListener('click', function () {
         // 删除元素
         li.remove();
