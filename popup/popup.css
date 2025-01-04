@@ -1,45 +1,67 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    margin: 0;
-    padding: 20px;
-    width: 300px; /* 调整弹出窗口的宽度 */
-  }
-  h1 {
-    color: #333;
-    text-align: center;
-  }
-  button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    background-color: #0078d4;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  button:hover {
-    background-color: #005a9e;
-  }
-  ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  li {
-    background-color: white;
-    margin: 5px 0;
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  .time {
-    font-weight: bold;
-    color: #555;
-  }
-  .query {
-    margin-left: 10px;
-    color: #777;
-  }
-  
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  margin: 0;
+  padding: 20px;
+  width: 300px; /* 调整弹出窗口的宽度 */
+}
+
+h1 {
+  color: #333;
+  text-align: center;
+}
+
+button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  background-color: #0078d4;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #005a9e;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  margin: 5px 0;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.time {
+  font-weight: bold;
+  color: #555;
+}
+
+.query {
+  margin-left: 10px;
+  color: #777;
+}
+
+.delete-button {
+  margin-right: 10px;
+  padding: 5px 10px;
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  background-color: #cc0000;
+}

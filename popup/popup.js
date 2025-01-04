@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // 加载并显示存储的数据
   chrome.storage.sync.get({ requestParams: [] }, function (result) {
-    result.requestParams.forEach(item => {
+    result.requestParams.forEach((item, index) => {
       const li = document.createElement('li');
       const timeSpan = document.createElement('span');
       timeSpan.className = 'time';
@@ -13,8 +13,23 @@ document.addEventListener('DOMContentLoaded', function () {
       const querySpan = document.createElement('span');
       querySpan.className = 'query';
       querySpan.textContent = `${item.query}`;
+      const deleteButton = document.createElement('button');
+      deleteButton.className = 'delete-button';
+      deleteButton.textContent = 'Delete';
+      deleteButton.addEventListener('click', function () {
+        // 删除元素
+        li.remove();
+        // 删除存储的数据
+        chrome.storage.sync.get({ requestParams: [] }, function (result) {
+          const updatedParams = result.requestParams.filter((_, i) => i !== index);
+          chrome.storage.sync.set({ requestParams: updatedParams }, function () {
+            console.log('Item deleted');
+          });
+        });
+      });
       li.appendChild(timeSpan);
       li.appendChild(querySpan);
+      li.appendChild(deleteButton);
       queryList.appendChild(li);
     });
   });
