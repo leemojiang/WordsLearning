@@ -39,6 +39,22 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 //   });
 // }
 
+function refreshSyncData() {
+  chrome.storage.sync.get(null, function(items) {
+    chrome.storage.sync.set(items, function() {
+      if (chrome.runtime.lastError) {
+        console.error("Error refreshing sync data: ", chrome.runtime.lastError);
+      } else {
+        console.log("Sync data refreshed successfully");
+      }
+    });
+  });
+}
+
+// 调用函数手动刷新同步数据
+refreshSyncData();
+
+
 
 function testWordCount(){
   chrome.storage.sync.get(["wordCounts"], function(result){
