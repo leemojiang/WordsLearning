@@ -37,13 +37,33 @@ function wordDic2WordCloud(wordDict_,container){
   });
 }
 
+function updateWordCount(word) {
+  if (word.trim().split(' ').length > 1) {
+    console.log("Is a sentence")
+    return
+  }
+
+  if (wordsDic[word]) {
+    wordsDic[word] += 1;
+  } else {
+    wordsDic[word] = 1;
+  }
+
+  return
+}
 
 
 document.addEventListener('DOMContentLoaded', function () {
   // 从本地存储获取单词列表
-  chrome.storage.sync.get(['wordCounts', 'unknowCounts'], function (result) {
-    wordsDic = result.wordCounts || {};
+  chrome.storage.sync.get(['requestParams', 'unknowCounts'], function (result) {
+    requestParams = result.requestParams || [];
     unknownWords = result.unknowCounts || {}; //unknown word list
+
+    requestParams.map(q => q.query.map(x=> updateWordCount(x) )  )
+
+    chrome.storage.sync.set({ wordCounts: wordsDic }, function () {
+      console.log('Word count updated:', wordsDic);
+    });
 
     let wl = Object.keys(wordsDic).sort((a, b) => wordsDic[b] - wordsDic[a]) //decending sorted word list
     let uwl = Object.keys(unknownWords).sort((a, b) => unknownWords[b] - unknownWords[a])

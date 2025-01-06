@@ -7,7 +7,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       chrome.storage.sync.set({ requestParams: requestParams }, function () {
         console.log('Query parameter saved:', message.query);
         sendResponse({ status: 'success' });
-        message.query.map(x => updateWordCount(x))
+        // message.query.map(x => updateWordCount(x))
       });
     });
   } else {
@@ -18,26 +18,26 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 
-function updateWordCount(word) {
-  if (word.trim().split(' ').length > 1) {
-    console.log("Is a sentence")
-    return
-  }
+// function updateWordCount(word) {
+//   if (word.trim().split(' ').length > 1) {
+//     console.log("Is a sentence")
+//     return
+//   }
 
-  chrome.storage.sync.get({ wordCounts: {} }, function (result) {
-    let wordCounts = result.wordCounts;
+//   chrome.storage.sync.get({ wordCounts: {} }, function (result) {
+//     let wordCounts = result.wordCounts;
 
-    if (wordCounts[word]) {
-      wordCounts[word] += 1;
-    } else {
-      wordCounts[word] = 1;
-    }
+//     if (wordCounts[word]) {
+//       wordCounts[word] += 1;
+//     } else {
+//       wordCounts[word] = 1;
+//     }
 
-    chrome.storage.sync.set({ wordCounts: wordCounts }, function () {
-      console.log('Word count updated:', wordCounts);
-    });
-  });
-}
+//     chrome.storage.sync.set({ wordCounts: wordCounts }, function () {
+//       console.log('Word count updated:', wordCounts);
+//     });
+//   });
+// }
 
 
 function testWordCount(){
