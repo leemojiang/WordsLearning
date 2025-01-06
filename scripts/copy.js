@@ -26,7 +26,7 @@ document.addEventListener('selectionchange', function() {
         hoverIcon.addEventListener('click', function() {
             // console.log(selectedText);
             const timestamp = new Date();
-            chrome.runtime.sendMessage({ query: selectedText, time: timestamp.toLocaleString(), ts: timestamp,from:"page copy" }, function (response) {
+            chrome.runtime.sendMessage({ query: selectedText.split("\n"), time: timestamp.toLocaleString(), ts: timestamp,from:"page copy" }, function (response) {
                 console.log('Message response:', response);
             });
             // 复制选中的单词到剪贴板
