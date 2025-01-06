@@ -1,6 +1,6 @@
 let hoverIcon;
 
-console.log("Copy js executed")
+console.log("Copy js executed");
 
 document.addEventListener('selectionchange', function() {
     const selectedText = window.getSelection().toString().trim();
@@ -20,10 +20,15 @@ document.addEventListener('selectionchange', function() {
         hoverIcon.style.cursor = 'pointer';
         document.body.appendChild(hoverIcon);
 
-        console.log(1,selectedText)
+        // console.log(1, selectedText);
+
         // 添加点击事件
         hoverIcon.addEventListener('click', function() {
-            console.log(selectedText)
+            // console.log(selectedText);
+            const timestamp = new Date();
+            chrome.runtime.sendMessage({ query: selectedText, time: timestamp.toLocaleString(), ts: timestamp,from:"page copy" }, function (response) {
+                console.log('Message response:', response);
+            });
             // 复制选中的单词到剪贴板
             // navigator.clipboard.writeText(selectedText).then(() => {
             //     console.log('单词已复制到剪贴板');
@@ -40,10 +45,12 @@ document.addEventListener('selectionchange', function() {
             hoverIcon = null;
         });
     } else {
-        // 如果取消了选择，移除悬浮图标
-        if (hoverIcon) {
-            document.body.removeChild(hoverIcon);
-            hoverIcon = null;
-        }
+        // 如果取消了选择，延迟移除悬浮图标
+        setTimeout(() => {
+            if (hoverIcon) {
+                document.body.removeChild(hoverIcon);
+                hoverIcon = null;
+            }
+        }, 100); // 延迟100毫秒
     }
 });
