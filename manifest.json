@@ -6,7 +6,9 @@
       "webRequest",
       "contextMenus",
       "clipboardWrite",
-      "storage"
+      "storage",
+      "activeTab",
+      "scripting"
     ],
     "background": {
       "service_worker": "./scripts/background.js"

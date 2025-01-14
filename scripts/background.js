@@ -1,3 +1,23 @@
+// 添加到 background.js 文件中
+// let isEnabled = true;
+
+// chrome.action.onClicked.addListener((tab) => {
+//     isEnabled = !isEnabled;
+    
+//     // 更新图标状态
+//     chrome.action.setIcon({
+//         path: isEnabled ? 'icons/icon-enabled.png' : 'icons/icon-disabled.png',
+//         tabId: tab.id
+//     });
+
+//     // 通知内容脚本
+//     chrome.tabs.sendMessage(tab.id, {
+//         action: 'toggleEnabled',
+//         enabled: isEnabled
+//     });
+// });
+
+
 //消息函数的处理
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.query && message.time) {
