@@ -85,8 +85,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
 document.addEventListener('DOMContentLoaded', function() {
   const openInfoButton = document.getElementById('open-info');
-
+  const wordleButton = document.getElementById('wordleButton');
+  
   openInfoButton.addEventListener('click', function() {
     chrome.tabs.create({ url: '/play/game.html' });
   });
+
+  wordleButton.addEventListener('click', function(){
+    chrome.tabs.create({url: '/wordle/index.html'})
+  })
 });
