@@ -4,18 +4,62 @@ const NUMBER_OF_GUESSES = 6;
 let guessesRemaining = NUMBER_OF_GUESSES;
 let currentGuess = [];
 let nextLetter = 0;
-let rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)];
+// let rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)];
+let rightGuessString;
+let wordLength;
 
-console.log(rightGuessString);
+let wordsDic = {}
 
+// 替换初始化随机单词的逻辑
+function initGame() {
+  chrome.storage.sync.get(['requestParams'], function (result) {
+    const requestParams = result.requestParams || [];
+
+
+    function updateWordCount(word) {
+      if (word.trim().split(' ').length > 1) {
+        console.log("Is a sentence")
+        return
+      }
+    
+      if (wordsDic[word]) {
+        wordsDic[word] += 1;
+      } else {
+        wordsDic[word] = 1;
+      }
+    
+      return
+    }
+    // 从所有查询的单词中随机选择一个
+    requestParams.map(q => q.query.map(x=> updateWordCount(x) ))
+    
+    // 从词典中获取所有单词
+    const allWords = Object.keys(wordsDic);
+
+    rightGuessString = allWords[Math.floor(Math.random() * allWords.length)];
+    wordLength = rightGuessString.length;
+    
+    // 重置游戏状态
+    guessesRemaining = NUMBER_OF_GUESSES;
+    currentGuess = [];
+    nextLetter = 0;
+    
+    // 初始化游戏板
+    initBoard();
+    console.log(rightGuessString); // 用于调试
+  });
+}
+
+// 修改 initBoard 函数以适应不同长度的单词
 function initBoard() {
   let board = document.getElementById("game-board");
+  board.innerHTML = ''; // 清空现有板子
 
   for (let i = 0; i < NUMBER_OF_GUESSES; i++) {
     let row = document.createElement("div");
     row.className = "letter-row";
 
-    for (let j = 0; j < 5; j++) {
+    for (let j = 0; j < wordLength; j++) {
       let box = document.createElement("div");
       box.className = "letter-box";
       row.appendChild(box);
@@ -23,6 +67,15 @@ function initBoard() {
 
     board.appendChild(row);
   }
+  
+  // 添加揭秘按钮
+  const revealButton = document.createElement("button");
+  revealButton.textContent = "Answer";
+  revealButton.className = "reveal-button";
+  revealButton.addEventListener("click", () => {
+    toastr.info(`Right Answer: "${rightGuessString}"`);
+  });
+  document.body.appendChild(revealButton);
 }
 
 function shadeKeyBoard(letter, color) {
@@ -54,27 +107,23 @@ function deleteLetter() {
 
 function checkGuess() {
   let row = document.getElementsByClassName("letter-row")[6 - guessesRemaining];
-  let guessString = "";
+  let guessString = currentGuess.join('');
   let rightGuess = Array.from(rightGuessString);
 
-  for (const val of currentGuess) {
-    guessString += val;
-  }
-
-  if (guessString.length != 5) {
+  if (guessString.length != wordLength) {
     toastr.error("Not enough letters!");
     return;
   }
 
-  if (!WORDS.includes(guessString)) {
-    toastr.error("Word not in list!");
-    return;
-  }
+  // if (!WORDS.includes(guessString)) {
+  //   toastr.error("Word not in list!");
+  //   return;
+  // }
 
-  var letterColor = ["gray", "gray", "gray", "gray", "gray"];
+  var letterColor = new Array(wordLength).fill("gray");
 
   //check green
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < wordLength; i++) {
     if (rightGuess[i] == currentGuess[i]) {
       letterColor[i] = "green";
       rightGuess[i] = "#";
@@ -83,7 +132,7 @@ function checkGuess() {
 
   //check yellow
   //checking guess letters
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < wordLength; i++) {
     if (letterColor[i] == "green") continue;
 
     //checking right letters
@@ -95,7 +144,7 @@ function checkGuess() {
     }
   }
 
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < wordLength; i++) {
     let box = row.children[i];
     let delay = 250 * i;
     setTimeout(() => {
@@ -124,7 +173,7 @@ function checkGuess() {
 }
 
 function insertLetter(pressedKey) {
-  if (nextLetter === 5) {
+  if (nextLetter === wordLength) {
     return;
   }
   pressedKey = pressedKey.toLowerCase();
@@ -197,4 +246,7 @@ document.getElementById("keyboard-cont").addEventListener("click", (e) => {
   document.dispatchEvent(new KeyboardEvent("keyup", { key: key }));
 });
 
-initBoard();
+// 初始化游戏
+document.addEventListener('DOMContentLoaded', function() {
+  initGame();
+});
