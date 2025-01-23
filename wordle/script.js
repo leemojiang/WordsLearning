@@ -18,9 +18,11 @@ function initGame() {
 
     function updateWordCount(word) {
       if (word.trim().split(' ').length > 1) {
-        console.log("Is a sentence")
-        return
+        console.log("Is a sentence");
+        return;
       }
+
+      word = word.toLowerCase();
     
       if (wordsDic[word]) {
         wordsDic[word] += 1;
@@ -28,10 +30,10 @@ function initGame() {
         wordsDic[word] = 1;
       }
     
-      return
+      return;
     }
     // 从所有查询的单词中随机选择一个
-    requestParams.map(q => q.query.map(x=> updateWordCount(x) ))
+    requestParams.map(q => q.query.map(x=> updateWordCount(x) ));
     
     // 从词典中获取所有单词
     const allWords = Object.keys(wordsDic);
@@ -55,10 +57,13 @@ function initBoard() {
   let board = document.getElementById("game-board");
   board.innerHTML = ''; // 清空现有板子
 
-  for (let i = 0; i < NUMBER_OF_GUESSES; i++) {
+  for (let i = 0; i < NUMBER_OF_GUESSES+1; i++) {
     let row = document.createElement("div");
     row.className = "letter-row";
-
+    if (i == NUMBER_OF_GUESSES) {
+      // Hint line
+      row.style.visibility = "hidden";
+    }
     for (let j = 0; j < wordLength; j++) {
       let box = document.createElement("div");
       box.className = "letter-box";
@@ -68,14 +73,46 @@ function initBoard() {
     board.appendChild(row);
   }
   
-  // 添加揭秘按钮
-  const revealButton = document.createElement("button");
-  revealButton.textContent = "Answer";
-  revealButton.className = "reveal-button";
-  revealButton.addEventListener("click", () => {
-    toastr.info(`Right Answer: "${rightGuessString}"`);
-  });
-  document.body.appendChild(revealButton);
+   // 创建按钮容器
+   const buttonContainer = document.createElement("div");
+   buttonContainer.className = "button-container";
+   
+   // 添加揭秘按钮
+   const revealButton = document.createElement("button");
+   revealButton.textContent = "Answer";
+   revealButton.className = "game-button reveal-button";
+   revealButton.addEventListener("click", () => {
+     toastr.info(`Right Answer: "${rightGuessString}"`);
+   });
+   
+   // 添加提示按钮
+   const hintButton = document.createElement("button");
+   hintButton.textContent = "Hint";
+   hintButton.className = "game-button hint-button";
+   hintButton.addEventListener("click", giveHint);
+   
+   buttonContainer.appendChild(revealButton);
+   buttonContainer.appendChild(hintButton);
+   document.body.appendChild(buttonContainer);
+}
+
+// 添加提示功能
+function giveHint() {
+  let rows = document.getElementsByClassName("letter-row");
+  //插入 Hint 行
+  let row = rows[NUMBER_OF_GUESSES];
+  row.style.visibility = "visible"
+   
+  // 随机选择一个位置显示提示
+  const position = Math.floor(Math.random() * wordLength);
+  const hintLetter = rightGuessString[position];
+  
+  // 在对应位置显示提示字母
+  let box = row.children[position];
+  animateCSS(box, "pulse");
+  box.textContent = hintLetter;
+  box.classList.add("filled-box");
+  
 }
 
 function shadeKeyBoard(letter, color) {
