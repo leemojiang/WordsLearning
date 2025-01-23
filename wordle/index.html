@@ -13,8 +13,10 @@
   />
 </head>
 <body>
-    <h1> Wordle Clone </h1>
+    <h1> Wordle </h1>
     
+    
+
     <div id="game-board">
 
     </div>
@@ -54,6 +56,18 @@
             <button class="keyboard-button">m</button>
             <button class="keyboard-button">Enter</button>
         </div>
+    </div>
+
+    <!-- 添加游戏控制按钮 -->
+    <div class="button-container">
+        <button class="game-button reveal-button">Answer</button>
+        <button class="game-button hint-button">Hint</button>
+    </div>
+
+    <!-- 添加长度选择器容器 -->
+    <div class="length-selector">
+        <span class="length-label">Word Length: </span>
+        <div id="length-buttons"></div>
     </div>
 
 <script
