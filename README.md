@@ -4,6 +4,25 @@
 * 百度翻译 : 回车触发.
 * 划词翻译 : 点击选择部分后面的📋进行复制.
 
+# Features
+## 单词记录弹出页面
+![记录页面](/srcs/popup.jpg)
+* 点击插件按钮弹出页面
+* 可以一键导出所有历史数据,或者清除历史数据.
+* 可以往单词表里面添加新的单词.
+
+## 复习页面
+![复习页面](/srcs/review.jpg)
+* 复习搜索历史记录里面的单词.
+* 不记得的和搜索次数多的单词会被放到列表前面.
+
+## Wordle
+![Wordle](/srcs/wordle.jpg)
+* 使用Wordle Game复习搜索过的单词.
+* 如果搜索历史记录太少,也可以从词典中随机选择单词.
+* 非常非常简单的Hint.
+* REF:https://github.com/Morgenstern2573/wordle_clone
+
 # 使用
 1. 下载Git库,在开发者模式中加载已解压的插件.
 
@@ -11,5 +30,4 @@
 
 
 # TODO
-实现一个Wordle mini game进行复习.
-<!-- https://github.com/Morgenstern2573/wordle_clone -->
+~~实现一个Wordle mini game进行复习.~~
