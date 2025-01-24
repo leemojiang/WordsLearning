@@ -164,3 +164,11 @@ h1 {
   margin-top: 10px;
   opacity: 0.8;
 }
+
+.random-dic-button {
+  background-color: #9C27B0;
+}
+
+.random-dic-button:hover {
+  background-color: #7B1FA2;
+}

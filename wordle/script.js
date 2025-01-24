@@ -1,4 +1,5 @@
-import { WORDS } from "./words.js";
+import { WORDS,words5,words6 } from "./words.js";
+import { dic } from "./dictionary.js";
 
 const NUMBER_OF_GUESSES = 6;
 let guessesRemaining = NUMBER_OF_GUESSES;
@@ -130,6 +131,35 @@ function giveHint() {
 
 }
 
+// 添加从 dic 中随机选词的函数
+function initGameWithRandomWord() {
+    // 从 dic 中筛选指定长度的单词
+    let filteredDicWords
+    if (wordLength){
+      filteredDicWords = dic.filter(word => word.length === wordLength);
+    }else{
+      filteredDicWords = dic;
+    }
+    
+    
+    if (filteredDicWords.length === 0) {
+      toastr.error(`No ${wordLength}-letter words found in dictionary!`);
+      return;
+    }
+    
+    // 选择随机单词
+    rightGuessString = filteredDicWords[Math.floor(Math.random() * filteredDicWords.length)];
+    
+    // 重置游戏状态
+    guessesRemaining = NUMBER_OF_GUESSES;
+    currentGuess = [];
+    nextLetter = 0;
+    
+    // 重新初始化游戏板
+    initBoard();
+    console.log('Selected random word from dictionary:', rightGuessString);
+}
+
 function shadeKeyBoard(letter, color) {
   for (const elem of document.getElementsByClassName("keyboard-button")) {
     if (elem.textContent === letter) {
@@ -167,10 +197,20 @@ function checkGuess() {
     return;
   }
 
-  // if (!WORDS.includes(guessString)) {
-  //   toastr.error("Word not in list!");
-  //   return;
-  // }
+  if (guessString.length == 5 & !words5.includes(guessString) ) {
+    toastr.error("Word not in list!");
+    return;
+  }
+
+  if (guessString.length == 6 & !words6.includes(guessString) ) {
+    toastr.error("Word not in list!");
+    return;
+  }
+
+  if (!dic.includes(guessString)){
+    toastr.error("Word not in list!");
+    return;
+  }
 
   var letterColor = new Array(wordLength).fill("gray");
 
@@ -309,4 +349,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // 添加提示按钮事件
   document.querySelector('.hint-button').addEventListener('click', giveHint);
+
+  // 添加随机词典单词按钮事件
+  document.querySelector('.random-dic-button').addEventListener('click', () => {
+    initGameWithRandomWord();
+    toastr.info('New random word selected from dictionary!');
+  });
 });
