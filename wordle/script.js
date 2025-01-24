@@ -8,7 +8,7 @@ let nextLetter = 0;
 // let rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)];
 let rightGuessString;
 let wordLength;
-
+let wordList=[];
 let wordsDic = {}
 
 // 替换初始化随机单词的逻辑
@@ -38,7 +38,7 @@ function initGame(selectedLength = null) {
 
     // 获取所有可用的单词长度
     const availableLengths = [...new Set(Object.keys(wordsDic).map(word => word.length))].sort((a, b) => a - b);
-
+    
     // 如果没有指定长度，使用第一个可用长度
     if (!selectedLength || !availableLengths.includes(selectedLength)) {
       selectedLength = availableLengths[0];
@@ -46,12 +46,12 @@ function initGame(selectedLength = null) {
 
     // 过滤指定长度的单词
     const filteredWords = Object.keys(wordsDic).filter(word => word.length === selectedLength);
-
+    
     if (filteredWords.length === 0) {
       toastr.error(`No ${selectedLength}-letter words found!`);
       return;
     }
-
+    
     // 选择随机单词
     rightGuessString = filteredWords[Math.floor(Math.random() * filteredWords.length)];
     wordLength = selectedLength;
@@ -66,6 +66,7 @@ function initGame(selectedLength = null) {
     guessesRemaining = NUMBER_OF_GUESSES;
     currentGuess = [];
     nextLetter = 0;
+    wordList = filteredWords;
 
     // 初始化游戏板
     initBoard();
@@ -197,17 +198,17 @@ function checkGuess() {
     return;
   }
 
-  if (guessString.length == 5 & !words5.includes(guessString) ) {
+  if (guessString.length == 5 & !wordList.includes(guessString) & !words5.includes(guessString) ) {
     toastr.error("Word not in list!");
     return;
   }
 
-  if (guessString.length == 6 & !words6.includes(guessString) ) {
+  if (guessString.length == 6 & !wordList.includes(guessString) & !words6.includes(guessString) ) {
     toastr.error("Word not in list!");
     return;
   }
 
-  if (!dic.includes(guessString)){
+  if ( !wordList.includes(guessString) & !dic.includes(guessString) ){
     toastr.error("Word not in list!");
     return;
   }
