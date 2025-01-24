@@ -37,24 +37,30 @@ function initGame(selectedLength = null) {
     requestParams.map(q => q.query.map(x => updateWordCount(x)));
 
     // 获取所有可用的单词长度
-    const availableLengths = [...new Set(Object.keys(wordsDic).map(word => word.length))].sort((a, b) => a - b);
+    const availableLengths = [...new Set([3, 4, 5, 6, 7, 8, ...Object.keys(wordsDic).map(word => word.length)])].sort((a, b) => a - b);
+
     
+
     // 如果没有指定长度，使用第一个可用长度
     if (!selectedLength || !availableLengths.includes(selectedLength)) {
       selectedLength = availableLengths[0];
     }
+    wordLength = selectedLength;
+    updateLengthButtons(availableLengths)
 
     // 过滤指定长度的单词
     const filteredWords = Object.keys(wordsDic).filter(word => word.length === selectedLength);
     
     if (filteredWords.length === 0) {
       toastr.error(`No ${selectedLength}-letter words found!`);
+      toastr.info(`Use random word from Dictionary.`)
+      initGameWithRandomWord();
       return;
     }
     
     // 选择随机单词
     rightGuessString = filteredWords[Math.floor(Math.random() * filteredWords.length)];
-    wordLength = selectedLength;
+    
 
     // // 从词典中获取所有单词
     // const allWords = Object.keys(wordsDic);
@@ -70,7 +76,6 @@ function initGame(selectedLength = null) {
 
     // 初始化游戏板
     initBoard();
-    updateLengthButtons(availableLengths)
     console.log('Selected word:', rightGuessString); // 用于调试
   });
 }
