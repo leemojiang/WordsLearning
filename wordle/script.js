@@ -13,7 +13,7 @@ let wordsDic = {}
 
 // 替换初始化随机单词的逻辑
 function initGame(selectedLength = null) {
-  chrome.storage.sync.get(['requestParams'], function (result) {
+  chrome.storage.local.get(['requestParams'], function (result) {
     const requestParams = result.requestParams || [];
 
 
